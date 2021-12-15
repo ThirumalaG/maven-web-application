@@ -1,0 +1,24 @@
+node {
+    stage ("git clone"){
+        git url: "https://github.com/lohithdevsolutions-ec-projects/maven-web-application.git"
+    }
+    stage ("maven clean package") {
+        def mavenHome= tool name: "maven", type: "maven"
+        sh "${mavenHome}/bin/mvn clean package"
+        
+    }
+    stage ("build docker image") {
+        sh "docker build -t lohithkoppisettydev/java-web-app-docker:1 ."
+    }
+    stage ("docker login and push") {
+        sh "docker login -u lohithkoppisettydev -p Lohith*143"
+        sh "docker push lohithkoppisettydev/java-web-app-docker:1"
+    }
+    stage ("deploy app as docker container") {
+        sshagent(['Docker_dev_server_ssh']) {
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@3.109.4.135 sudo docker rm -f javawebappcontainer || true"
+        sh "ssh -o StrictHostKeyChecking=no ubuntu@3.109.4.135 sudo docker run -d -p 8080:8080 --name javawebappcontainer lohithkoppisettydev/java-web-app-docker:1"
+            
+        }
+    }
+}
