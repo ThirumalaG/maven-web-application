@@ -80,7 +80,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
-		</dependency>
+		</dependency> 
 		
 		<!-- provided dependencies -->
 
