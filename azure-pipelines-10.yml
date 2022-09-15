@@ -20,7 +20,7 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: PublishPipelineArtifact@2
+- task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
     artifactType: 'pipeline'
