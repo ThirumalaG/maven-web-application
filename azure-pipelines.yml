@@ -20,7 +20,8 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 - task: PublishPipelineArtifact@1
+  displayName: 'maven-artifact'
   inputs:
     targetPath: '$(Pipeline.Workspace)'
     artifactType: 'pipeline'
-    artifactName: 'drop'
+    artifactName: 'mavenarti'
