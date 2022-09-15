@@ -2,12 +2,6 @@
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
-parameters:
-- name: succeed
-  displayName: Succeed or fail
-  type: boolean
-  default: false
-
 trigger:
 - master
 
@@ -25,16 +19,3 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- job: ErrorHandler
-  dependsOn: Work
-  condition: failed()
-  steps: 
-  - bash: |
-      az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
-        --type bug \
-        --org $(System.TeamFoundationCollectionUri) \
-        --project $(System.TeamProject)
-    env: 
-      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-    displayName: 'Create work item on failure'
